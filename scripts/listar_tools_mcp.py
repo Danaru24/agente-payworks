@@ -16,7 +16,8 @@ async def main():
         "headers": {"Authorization": f"Bearer {token}"} if token else {}}})
     for t in await cliente.get_tools():
         esquema = t.args_schema if isinstance(t.args_schema, dict) else t.args_schema.model_json_schema()
-        print(f"\n## {t.name}\n{t.description}\n{json.dumps(esquema.get('properties', {}), indent=2)}")
+        print(f"\n## {t.name}\n{t.description}\nrequired: {esquema.get('required', [])}"
+              f"\n{json.dumps(esquema.get('properties', {}), indent=2, ensure_ascii=False)}")
  
  
 asyncio.run(main())
