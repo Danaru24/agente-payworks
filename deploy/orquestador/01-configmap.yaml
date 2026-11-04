@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orquestador-payworks-config
+data:
+  # TODO(ulises): ajustar a los servicios del namespace
+  LLM_BASE_URL: "http://vllm-llm:8000/v1"
+  LLM_MODEL: "qwen2.5-7b-instruct"
+  EMB_BASE_URL: "http://vllm-embeddings:8000/v1"
+  EMB_MODEL: "text-embedding"
+  MCP_GRAFANA_URL: "http://mcp-grafana:8000/mcp"
+  GRAFANA_DASHBOARD_UID: ""
+  RAG_TABLA: "documentos_payworks"
+  CATALOGO_TABLA: "paneles_dashboard"
+  HISTORY_WINDOW: "10"
+  MAX_INTENTOS: "3"
+  MODO_GRAFICAS: "ambos"
+  LANGSMITH_TRACING: "false"

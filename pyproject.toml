@@ -1,0 +1,30 @@
+[project]
+name = "agente-payworks-orquestador"
+version = "0.1.0"
+description = "Orquestador agéntico (LangGraph) del Agente Payworks"
+requires-python = ">=3.11"
+dependencies = [
+  "langgraph>=0.6",
+  "langchain-core>=0.3",
+  "langchain-openai>=0.3",
+  "langchain-mcp-adapters>=0.1",
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  # Sin el extra [binary]: psycopg-binary no está disponible en el índice RHOAI
+  "psycopg>=3.2.10,<4",
+  "psycopg-pool>=3.2",
+  "sqlglot>=25",
+  "matplotlib>=3.8",
+  "httpx>=0.27",
+  "pydantic>=2.7",
+]
+ 
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+ 
+[tool.setuptools.packages.find]
+where = ["src"]
+ 
+[tool.setuptools.package-data]
+orquestador = ["prompts/*.md", "skills/*/SKILL.md"]

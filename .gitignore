@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.zip
+deploy/**/02-secret.yaml
+*.egg-info/
+# Credenciales
+*.pem
+*.key
+*credentials*.json
+*secret*.json
