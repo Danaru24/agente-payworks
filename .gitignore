@@ -1,16 +1,58 @@
+# --- Variables locales y credenciales (nunca al repo) ---
 .env
 .env.*
 !.env.example
-.venv/
-venv/
-__pycache__/
-*.pyc
-.ipynb_checkpoints/
-*.zip
-deploy/**/02-secret.yaml
-*.egg-info/
-# Credenciales
 *.pem
 *.key
 *credentials*.json
 *secret*.json
+deploy/**/02-secret.yaml
+kubeconfig*
+.kube/
+
+# --- Entornos virtuales ---
+.venv/
+venv/
+env/
+
+# --- Cachés de Python y herramientas ---
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.cache/
+
+# --- Builds de pip / uv ---
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+*.whl
+
+# --- Jupyter / Workbench (JupyterLab, code-server) ---
+.ipynb_checkpoints/
+.virtual_documents/
+.jupyter/
+.local/
+.ipython/
+.config/
+.npm/
+nohup.out
+*.log
+scratch/
+
+# --- Editores / SO ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# --- Artefactos empaquetados ---
+*.zip
+*.tar
+*.tar.gz

@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: orquestador
-          image: quay.io/TODO/orquestador-payworks:0.1.0   # TODO(ulises)
+          image: orquestador-payworks:v0.1.0-o1   # ImageStreamTag local (lookupPolicy); actualizar vía RELEASE.md
           ports: [{containerPort: 8080}]
           envFrom:
             - configMapRef: {name: orquestador-payworks-config}

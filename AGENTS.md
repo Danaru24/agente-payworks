@@ -22,3 +22,19 @@ Orquestador LangGraph del Agente Payworks. Lee SOLO lo necesario para la tarea:
 - Si algo contradice la spec: DETENTE y propone el cambio al documento antes de codificar.
 - Al terminar: actualiza `PROGRESS.md` y, si cambió algo visible, el `README.md` (tono educativo, conciso).
 - Marca lo que necesites del humano como `TODO(ulises)` y agrégalo a `docs/PENDIENTES.md`.
+
+## Flujo de Desarrollo y Release (PC -> Workbench -> Pod Inmutable)
+Todo vive en un único namespace de OpenShift. Regla arquitectónica:
+1. **PC (Antigravity)**: se escribe código y spec → `git push`.
+2. **Workbench (OpenShift AI)**: solo `git pull` + pruebas en vivo contra los servicios del namespace. **No se edita código ahí**; si algo falla, se corrige en la PC.
+3. **Pod productivo**: corre únicamente imágenes inmutables construidas desde un commit (`oc start-build --from-repo=.`) y referenciadas por tag versionado `vX.Y.Z-oN` (N = outcome). Nunca `latest`, nunca código montado. Ver `deploy/orquestador/RELEASE.md`.
+
+Modo dev en el Workbench (sin ensuciar el working tree):
+```bash
+export PYTHONDONTWRITEBYTECODE=1           # sin __pycache__
+python -m venv .venv && . .venv/bin/activate
+pip install -e .                            # .venv/ y *.egg-info están en .gitignore
+cp .env.example .env && set -a && . ./.env && set +a   # .env local, ignorado
+uvicorn orquestador.api.main:app --reload --host 0.0.0.0 --port 8080
+git status --short                          # debe salir vacío antes de cada pull
+```
