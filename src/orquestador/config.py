@@ -5,6 +5,15 @@ Los valores marcados con TODO(ulises) son placeholders que debes completar
 """
 import os
 from dataclasses import dataclass, field
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+# Carga única del .env de la raíz del repo (modo dev / Workbench).
+# override=False: las variables ya definidas en el entorno del pod tienen prioridad.
+# Si el archivo no existe (imagen productiva), load_dotenv no hace nada.
+ENV_PATH = Path(__file__).resolve().parents[2] / ".env"
+load_dotenv(dotenv_path=ENV_PATH, override=False)
  
  
 def _s(n: str, d: str = "") -> str:
