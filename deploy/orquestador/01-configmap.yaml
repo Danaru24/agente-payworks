@@ -13,6 +13,7 @@ data:
   RAG_TABLA: "documentos_payworks"
   CATALOGO_TABLA: "paneles_dashboard"
   HISTORY_WINDOW: "10"
+  PG_POOL_TIMEOUT_S: "5"
   MAX_INTENTOS: "3"
   MODO_GRAFICAS: "ambos"
   LANGSMITH_TRACING: "false"

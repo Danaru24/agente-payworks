@@ -1,4 +1,4 @@
-"""Nodo D – Catalogador: text-to-SQL acotado a UNA tabla, validado con sqlglot."""
+"""Nodo D – Catalogador: text-to-SQL acotado a UNA tabla, validado fail-closed (sqlparse + re)."""
 from langchain_core.messages import HumanMessage, SystemMessage
 from pydantic import BaseModel
  

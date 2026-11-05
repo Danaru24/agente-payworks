@@ -19,6 +19,8 @@ class Instrucciones(BaseModel):
  
 async def _planear(state: dict, pendientes: list[str]) -> dict:
     eventos.estado("estratega")
+    if not pendientes:  # Atajo determinista: nada que instruir, no se llama al LLM
+        return {"replanear": False, "pendientes": [], "completadas": [RESET], "errores_tools": [RESET]}
     humano = "\n\n".join([
         formato.bloque("Mensaje actual", state["mensaje_actual"]),
         formato.bloque("Interpretación", state.get("interpretacion")),

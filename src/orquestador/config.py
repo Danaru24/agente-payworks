@@ -52,6 +52,7 @@ class Settings:
     pg_dsn_catalogo: str = _s("PG_DSN_CATALOGO", "postgresql://lector@postgres:5432/payworks")  # TODO(ulises)
     pg_dsn_memoria: str = _s("PG_DSN_MEMORIA", "postgresql://memoria@postgres:5432/payworks")  # TODO(ulises)
     memoria_schema: str = _s("MEMORIA_SCHEMA", "agente_memoria")
+    pg_pool_timeout_s: float = _f("PG_POOL_TIMEOUT_S", 5.0)  # espera máx. por conexión del pool
  
     # --- RAG (pgvector) ---
     rag_tabla: str = _s("RAG_TABLA", "documentos_payworks")  # TODO(ulises)

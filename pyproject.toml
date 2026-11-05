@@ -12,8 +12,7 @@ dependencies = [
   "uvicorn[standard]>=0.30",
   # Sin el extra [binary]: psycopg-binary no está disponible en el índice RHOAI
   "psycopg>=3.2.10,<4",
-  "psycopg-pool>=3.2",
-  "sqlglot>=25",
+  "sqlparse>=0.5.5,<1",
   "matplotlib>=3.8",
   "httpx>=0.27",
   "pydantic>=2.7",

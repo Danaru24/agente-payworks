@@ -22,6 +22,7 @@ Campos con reducer (escritura paralela): `completadas`, `errores_tools`, `observ
 - Centinela: `valido` → Estratega; otro → respuesta fija.
 - Estratega: C y D en paralelo; E solo cuando D terminó (o con UIDs del usuario).
 - Ciclo único con tope `MAX_INTENTOS=3` (incluye reintentos técnicos del Estratega y del Auditor).
+- Sin tools planeadas (p. ej. saludo): Estratega y Auditor pasan de forma determinista, sin LLM (`validacion_final=True`), y el Redactor responde.
 - Al agotarse: el Redactor responde con lo disponible y declara faltantes.
  
 ## Presupuesto de contexto (max_model_len = 32k)

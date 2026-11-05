@@ -50,7 +50,11 @@ async def chat_stream(req: ChatRequest):
         respuesta: list[str] = []
         categoria = None
         try:
-            ventana = await repo.obtener_ventana(req.session_id, settings.history_window)
+            try:
+                ventana = await repo.obtener_ventana(req.session_id, settings.history_window)
+            except Exception:  # noqa: BLE001  la memoria no debe tumbar el chat
+                log.exception("No se pudo leer la memoria; se continúa sin historial")
+                ventana = []
             inicial = {"session_id": req.session_id, "user_id": req.user_id,
                        "mensaje_actual": req.mensaje, "ventana_conversacion": ventana,
                        "observaciones": [], "intentos": 0}

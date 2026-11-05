@@ -86,6 +86,8 @@ oc apply -f deploy/orquestador/
 # 4. OpenWebUI: Admin Panel → Functions → importar deploy/openwebui/pipe_agente_payworks.py
 ```
 Desarrollo local: `pip install -e . && cp .env.example .env && uvicorn orquestador.api.main:app --reload --port 8080`
+
+Prueba de humo (sin servicios, LLM simulado): `pip install -e '.[dev]' && pytest -q tests/`
  
 ## 6. Resultados
 <!-- TODO(ulises): latencias por nodo, ejemplos de conversación, capturas -->

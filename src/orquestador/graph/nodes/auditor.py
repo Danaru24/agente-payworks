@@ -35,6 +35,10 @@ def _evidencia(state: dict) -> str:
  
 async def auditor(state: dict) -> dict:
     eventos.estado("auditor")
+    if not (state.get("usar_rag") or state.get("usar_catalogo") or state.get("usar_mcp")):
+        # Atajo determinista: sin tools planeadas (p. ej. saludo) no hay evidencia que auditar
+        return {"validacion_final": True, "intentos": state.get("intentos", 0) + 1,
+                "observaciones": ["[Auditor] Sin tools planeadas: respuesta conversacional."]}
     r: Veredicto = await estructurado("auditor", Veredicto).ainvoke(
         [SystemMessage(cargar_prompt("auditor", ("auditar-evidencia",))), HumanMessage(_evidencia(state))])
     intentos = state.get("intentos", 0) + 1
