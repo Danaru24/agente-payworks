@@ -8,8 +8,10 @@ Punto = tuple[float, float]
  
  
 def extraer_series(dato: Any) -> list[dict]:
-    """Extrae series de respuestas de Grafana (frames) o Prometheus/VictoriaMetrics (matrix).
-    TODO(ulises): validar contra una respuesta real de run_panel_query."""
+    """Extrae series de respuestas de Grafana (data frames) o Prometheus vía `query_prometheus`
+    del MCP de Grafana: matrix (`metric` + `values: [[ts, "v"], ...]`, posiblemente envuelta en
+    `{"data": {"result": [...]}}`) o vector instantáneo (`metric` + `value: [ts, "v"]`)."""
+    # TODO(ulises): validar contra una respuesta real de query_prometheus en el clúster.
     series: list[dict] = []
  
     def visitar(nodo: Any, nombre: str = "serie"):
@@ -24,10 +26,14 @@ def extraer_series(dato: Any) -> list[dict]:
                         series.append({"nombre": f"{nom}#{i}" if len(vals) > 2 else nom, "puntos": pts})
                 return
             # Prometheus matrix: {"metric": {...}, "values": [[ts, "v"], ...]}
-            if isinstance(nodo.get("values"), list) and "metric" in nodo:
-                pts = [(float(t), float(v)) for t, v in nodo["values"] if _num(t) and _num(v)]
+            # Prometheus vector: {"metric": {...}, "value": [ts, "v"]}
+            if "metric" in nodo and (isinstance(nodo.get("values"), list) or isinstance(nodo.get("value"), list)):
+                crudos = nodo["values"] if isinstance(nodo.get("values"), list) else [nodo["value"]]
+                pts = [(float(p[0]), float(p[1])) for p in crudos
+                       if isinstance(p, (list, tuple)) and len(p) >= 2 and _num(p[0]) and _num(p[1])]
+                # Puntos malformados (no par [ts, v] o no numéricos) se descartan sin romper.
                 if pts:
-                    series.append({"nombre": str(nodo["metric"]), "puntos": pts})
+                    series.append({"nombre": _nombre_metrica(nodo["metric"], nombre), "puntos": pts})
                 return
             for k, v in nodo.items():
                 visitar(v, str(k))
@@ -39,6 +45,15 @@ def extraer_series(dato: Any) -> list[dict]:
     return series
  
  
+def _nombre_metrica(metric: Any, defecto: str) -> str:
+    """`{"__name__": "x", "pod": "a"}` -> `x{pod="a"}` (formato PromQL legible)."""
+    if not isinstance(metric, dict) or not metric:
+        return str(metric) if metric else defecto
+    base = metric.get("__name__", "")
+    etiquetas = ",".join(f'{k}="{v}"' for k, v in sorted(metric.items()) if k != "__name__")
+    return f"{base}{{{etiquetas}}}" if etiquetas else (base or defecto)
+
+
 def _num(x) -> bool:
     try:
         float(x)

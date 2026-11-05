@@ -84,8 +84,11 @@ class Settings:
     mcp_url: str = _s("MCP_GRAFANA_URL", "http://mcp-grafana:8000/mcp")  # TODO(ulises)
     mcp_token: str = _s("MCP_GRAFANA_TOKEN", "")
     mcp_tools_permitidas: list[str] = field(default_factory=lambda: _lista(
-        "MCP_TOOLS_PERMITIDAS", "get_dashboard_panel_queries,run_panel_query,generate_deeplink"))
+        "MCP_TOOLS_PERMITIDAS",
+        "get_dashboard_panel_queries,query_prometheus,generate_deeplink,get_panel_image,list_datasources"))
     grafana_dashboard_uid: str = _s("GRAFANA_DASHBOARD_UID", "")  # TODO(ulises)
+    # Fallback si ni el catálogo ni get_dashboard_panel_queries traen el datasourceUid.
+    grafana_datasource_uid: str = _s("GRAFANA_DATASOURCE_UID", "")
     grafana_url_publica: str = _s("GRAFANA_URL_PUBLICA", "")  # TODO(ulises)
     mcp_timeout_s: int = _i("MCP_TIMEOUT_S", 15)
  

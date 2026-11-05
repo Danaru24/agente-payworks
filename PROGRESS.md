@@ -25,3 +25,13 @@
 - `tools/catalogo.py`: `validar_sql` reimplementado fail-closed con `sqlparse` + `re` (1 sentencia SELECT, sin comentarios, sin subconsultas/JOIN/UNION/WITH, tabla única = `CATALOGO_TABLA`, `LIMIT` acotado a `CATALOGO_LIMITE`).
 - `tools/grafana_mcp.py` y `scripts/listar_tools_mcp.py` ya usaban el SDK `mcp` (sin cambios).
 - Nuevo `scripts/test_validador_sql.py` (casos positivos/negativos sin BD).
+
+
+## 2026-11-05 – Observador: migración de `run_panel_query` a Ruta 2 MCP
+- `run_panel_query` no existe en el MCP de Grafana del clúster. `consultar_panel()` ahora usa una sola
+  `ClientSession`: `get_dashboard_panel_queries` (si el catálogo no trae `expr`/`datasource_uid`) →
+  `query_prometheus` (range, `stepSeconds` ≈ 100 puntos, mínimo 60 s) → `generate_deeplink` (opcional).
+- Allowlist por defecto: `get_dashboard_panel_queries, query_prometheus, generate_deeplink, get_panel_image, list_datasources`.
+- Nuevo `GRAFANA_DATASOURCE_UID` (fallback opcional del datasource).
+- `extraer_series()` soporta matrix/vector de Prometheus (incluido el envoltorio `data.result`) y nombra series como PromQL.
+- TODO(ulises): validar contra una respuesta real de `query_prometheus` y pasar la fila del catálogo (`panel=`) desde el Observador cuando el state la tenga.
