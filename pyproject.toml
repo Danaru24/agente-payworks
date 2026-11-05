@@ -7,7 +7,7 @@ dependencies = [
   "langgraph>=0.6",
   "langchain-core>=0.3",
   "langchain-openai>=0.3",
-  "langchain-mcp-adapters>=0.1",
+  "mcp>=1.26,<2",
   "fastapi>=0.115",
   "uvicorn[standard]>=0.30",
   # Sin el extra [binary]: psycopg-binary no está disponible en el índice RHOAI
@@ -19,6 +19,9 @@ dependencies = [
   "pydantic>=2.7",
 ]
  
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"

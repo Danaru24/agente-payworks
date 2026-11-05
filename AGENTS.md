@@ -16,6 +16,9 @@ Orquestador LangGraph del Agente Payworks. Lee SOLO lo necesario para la tarea:
 6. Solo el Redactor emite tokens al usuario; los demás nodos emiten `eventos.estado`.
 7. Prompts en `prompts/*.md`, conocimiento procedimental en `skills/*/SKILL.md`. No prompts en código.
 8. Dependencias: `psycopg` sin extra `[binary]` (índice RHOAI).
+
+## Restricciones de entorno
+- Prohibido añadir dependencias que no existan en el índice RHOAI 3.5 (sin salida a PyPI público). Disponibles: `mcp==1.30.0`, `fastmcp==3.4.4`. Prohibidos: `langchain-mcp-adapters`, `langchain[mcp]`, `fastmcp>=4`.
  
 ## Forma de trabajo
 - Trabaja por **outcome** (ver `docs/00-vision.md`), no por lista de tareas.
