@@ -35,3 +35,11 @@
 - Nuevo `GRAFANA_DATASOURCE_UID` (fallback opcional del datasource).
 - `extraer_series()` soporta matrix/vector de Prometheus (incluido el envoltorio `data.result`) y nombra series como PromQL.
 - TODO(ulises): validar contra una respuesta real de `query_prometheus` y pasar la fila del catálogo (`panel=`) desde el Observador cuando el state la tenga.
+
+
+## 2026-11-06 – Outcome O2: RAG sobre `payworks_rag_1024` y concisión del Redactor
+- `config.py` y `.env.example`: defaults actualizados a la tabla real `payworks_rag_1024` (`id`, `contenido`, `metadata`, `embedding`) y filtro opcional `RAG_EXPERIMENTO_ID`.
+- `tools/rag.py`: recupera `seccion_h1`, `seccion_h2`, `seccion_h3` (con `COALESCE`), filtra opcionalmente por `experimento_id` y antepone `[Sección: H1 > H2 > H3]` al contenido de cada chunk.
+- `prompts/centinela.md`: regla explícita para saludos y preguntas de capacidades (`valido` con `usar_rag=false`, `usar_catalogo=false`, `usar_mcp=false`).
+- `prompts/redactor.md` y `skills/redactar-respuesta-openwebui/SKILL.md`: concisión estándar (150-250 palabras máx., 6 líneas máx. en saludos/capacidades) y prohibición de secciones vacías o de relleno.
+- Nuevo `scripts/probar_rag_o2.py`: CLI para consultar `buscar_contexto()` e inspeccionar similitudes y encabezados para calibrar `RAG_UMBRAL`.
